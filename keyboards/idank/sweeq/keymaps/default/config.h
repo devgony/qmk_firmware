@@ -14,8 +14,16 @@
 // It makes sense to use the same delay for the mouseweel
 #define MOUSEKEY_WHEEL_DELAY 100
 // The default is 100
-#define MOUSEKEY_WHEEL_INTERVAL 50
+#define MOUSEKEY_WHEEL_INTERVAL 200
 // The default is 40
 #define MOUSEKEY_WHEEL_TIME_TO_MAX 100
 
 #define QUICK_TAP_TERM 0
+
+// Tap dance
+#define TAPPING_TERM 175
+#define TAPPING_TERM_PER_KEY
+
+// Auto Shift
+// #define AUTO_SHIFT_TIMEOUT 150
+// #define NO_AUTO_SHIFT_ALPHA
