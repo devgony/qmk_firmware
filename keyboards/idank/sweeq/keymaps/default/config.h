@@ -12,11 +12,11 @@
 // The default is 300. Let's try and make this as low as possible while keeping the cursor responsive
 #define MOUSEKEY_DELAY 100
 // It makes sense to use the same delay for the mouseweel
-#define MOUSEKEY_WHEEL_DELAY 100
+#define MOUSEKEY_WHEEL_DELAY 255
 // The default is 100
-#define MOUSEKEY_WHEEL_INTERVAL 200
+#define MOUSEKEY_WHEEL_INTERVAL 255
 // The default is 40
-#define MOUSEKEY_WHEEL_TIME_TO_MAX 100
+#define MOUSEKEY_WHEEL_TIME_TO_MAX 255
 
 #define QUICK_TAP_TERM 0
 
