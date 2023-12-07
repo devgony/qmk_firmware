@@ -21,9 +21,9 @@
 #define QUICK_TAP_TERM 0
 
 // Tap dance
-#define TAPPING_TERM 175
-#define TAPPING_TERM_PER_KEY
+// #define TAPPING_TERM 175
+// #define TAPPING_TERM_PER_KEY
 
 // Auto Shift
 // #define AUTO_SHIFT_TIMEOUT 175
-// #define NO_AUTO_SHIFT_ALPHA
+#define NO_AUTO_SHIFT_ALPHA
