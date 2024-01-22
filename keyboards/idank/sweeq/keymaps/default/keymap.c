@@ -25,6 +25,50 @@ combo_t key_combos[] = {
   [JK_ESC] = COMBO(jk_combo, KC_ESC),
 };
 
+enum custom_keycodes {
+  LEFT_4X = SAFE_RANGE,
+  DOWN_4X,
+  UP_4X,
+  RIGHT_4X
+};
+
+void vertical_move_quadruple(const char* keycode_str) {
+    char str[64] = "";  
+    for(int i = 0; i < 4; i++) {
+        strcat(str, keycode_str);
+    }
+    send_string(str);
+}
+
+void horizontal_move_by_word(uint16_t keycode) {
+  register_code(KC_LALT);
+  tap_code(keycode);
+  unregister_code(KC_LALT);
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if (record->event.pressed) {
+    switch (keycode) {
+      case LEFT_4X:
+        horizontal_move_by_word(KC_LEFT);
+        return false;  
+      case DOWN_4X:
+        vertical_move_quadruple(SS_TAP(X_DOWN));
+        return false;  
+      case UP_4X:
+        vertical_move_quadruple(SS_TAP(X_UP));
+        return false;  
+      case RIGHT_4X:
+        horizontal_move_by_word(KC_RGHT);
+        return false;  
+    default:
+      return true;  
+    }
+  }
+  return true;
+}
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT(
     KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,            KC_Y,    KC_U,  KC_I,    KC_O,   KC_P,
@@ -39,7 +83,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
   ),
   [2] = LAYOUT(
-    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,           KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,
+    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,           LEFT_4X, DOWN_4X, UP_4X,   RIGHT_4X,KC_F10,
     KC_TRNS,  KC_TAB, KC_TRNS, KC_TRNS, KC_TRNS,         KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_ENT,
                                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
