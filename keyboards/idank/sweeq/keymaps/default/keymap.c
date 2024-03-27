@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
+#include "os_detection.h"
 
 #define MY_A LSFT_T(KC_A)
 #define MY_SC RSFT_T(KC_SCLN)
@@ -48,6 +49,18 @@ void horizontal_move_by_word(uint16_t keycode) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
+    if (keycode == KC_L && (get_mods() & MOD_BIT(KC_LGUI))) {
+        os_variant_t os = detected_host_os();
+
+        if (os == OS_WINDOWS) {
+          tap_code16(LCTL(KC_L));
+          return false;
+        } else {
+          return true;
+        }
+
+    }
+
     switch (keycode) {
       case LEFT_4X:
         horizontal_move_by_word(KC_LEFT);
