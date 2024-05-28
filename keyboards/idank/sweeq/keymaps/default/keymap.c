@@ -30,7 +30,8 @@ enum custom_keycodes {
   LEFT_4X = SAFE_RANGE,
   DOWN_4X,
   UP_4X,
-  RIGHT_4X
+  RIGHT_4X,
+  VIM_C
 };
 
 void vertical_move_quadruple(const char* keycode_str) {
@@ -42,9 +43,11 @@ void vertical_move_quadruple(const char* keycode_str) {
 }
 
 void horizontal_move_by_word(uint16_t keycode) {
-  register_code(KC_LALT);
-  tap_code(keycode);
-  unregister_code(KC_LALT);
+  tap_code16(LALT(keycode));
+}
+
+void vim_C(void) {
+  SEND_STRING(SS_LSFT(SS_TAP(X_END)) SS_TAP(X_DEL));
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -74,8 +77,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case RIGHT_4X:
         horizontal_move_by_word(KC_RGHT);
         return false;  
-    default:
-      return true;  
+      case VIM_C:
+        vim_C();
+        return false;  
+      default:
+        return true;  
     }
   }
   return true;
@@ -92,19 +98,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [1] = LAYOUT(
     KC_1,    KC_2,    KC_3,    KC_4,    KC_5,            KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
     KC_TRNS, KC_GRV,  KC_GRV,  KC_NO,   KC_NO,           KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_QUOT,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_NO,   KC_NO,           KC_ESC,  KC_BSLS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_NO,   KC_NO,           KC_BSLS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
                                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
   ),
   [2] = LAYOUT(
     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,           LEFT_4X, DOWN_4X, UP_4X,   RIGHT_4X,KC_F10,
-    KC_TRNS,  KC_TAB, KC_TRNS, KC_TRNS, KC_TRNS,         KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_ENT,
+    MO(4),   KC_TAB, KC_TRNS, KC_TRNS, KC_F12,          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_TRNS,
+    KC_TRNS, KC_DEL, KC_TRNS, KC_TRNS, KC_TRNS,         KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_ENT,
                                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
   ),
   [3] = LAYOUT(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,   KC_BRID,    KC_BRIU, KC_MUTE, KC_VOLD, KC_VOLU,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_MS_BTN3, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                                    KC_TRNS, KC_TRNS, KC_MS_BTN1, KC_MS_BTN2
+                                    KC_DEL,  KC_TRNS, KC_MS_BTN1, KC_MS_BTN2
+  ),
+  [4] = LAYOUT(
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,   KC_BRID,    KC_BRIU, KC_MUTE, KC_VOLD, KC_VOLU,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_MS_BTN3, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_BSPC, VIM_C,   KC_TRNS, KC_TRNS,         KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                                    KC_DEL,  KC_TRNS, KC_MS_BTN1, KC_MS_BTN2
   )
 };
