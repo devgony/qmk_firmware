@@ -20,6 +20,22 @@ enum combos {
   JK_ESC
 };
 
+enum {
+  VIM_cc
+};
+
+void vim_cc(tap_dance_state_t *state, void *user_data) {
+  if (state->count == 2) {
+    SEND_STRING(SS_TAP(X_END) SS_LSFT(SS_TAP(X_HOME)) SS_TAP(X_DEL));
+    reset_tap_dance(state);
+  } 
+}
+
+tap_dance_action_t tap_dance_actions[] = {
+  [VIM_cc] = ACTION_TAP_DANCE_FN(vim_cc),
+};
+
+
 const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
 
 combo_t key_combos[] = {
@@ -104,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [2] = LAYOUT(
     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,           LEFT_4X, DOWN_4X, UP_4X,   RIGHT_4X,KC_F10,
     MO(4),   KC_TAB, KC_TRNS, KC_TRNS, KC_F12,          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_TRNS,
-    KC_TRNS, KC_DEL, KC_TRNS, KC_TRNS, KC_TRNS,         KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_ENT,
+    KC_TRNS, KC_DEL, TD(VIM_cc), KC_TRNS, KC_TRNS,         KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_ENT,
                                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
   ),
   [3] = LAYOUT(
