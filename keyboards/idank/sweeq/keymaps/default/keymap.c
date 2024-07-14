@@ -16,10 +16,6 @@
 #define MY_F18 LT(1,KC_F18)
 #define MY_ENT LT(2,KC_ENT)
 
-enum combos {
-  JK_ESC
-};
-
 enum {
   VIM_cc
 };
@@ -33,13 +29,6 @@ void vim_cc(tap_dance_state_t *state, void *user_data) {
 
 tap_dance_action_t tap_dance_actions[] = {
   [VIM_cc] = ACTION_TAP_DANCE_FN(vim_cc),
-};
-
-
-const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
-
-combo_t key_combos[] = {
-  [JK_ESC] = COMBO(jk_combo, KC_ESC),
 };
 
 enum custom_keycodes {
@@ -103,6 +92,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
+const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
+// const uint16_t PROGMEM vim_c_combo[] = {KC_A, KC_D, COMBO_END};
+
+enum combos {
+  COMBO_JK_ESC,
+  // COMBO_VIM_C
+};
+
+combo_t key_combos[] = {
+  [COMBO_JK_ESC] = COMBO(jk_combo, KC_ESC),
+  // [COMBO_VIM_C] = COMBO(vim_c_combo, VIM_C),
+};
+
+// void process_combo_event(uint16_t combo_index, bool pressed) {
+//     switch(combo_index) {
+//         case COMBO_VIM_C:
+//             if (layer_state_is(2)) { // 레이어 2에서만 동작
+//                 if (pressed) {
+//                     vim_C();
+//                 }
+//             }
+//             break;
+//     }
+// }
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT(
@@ -119,7 +133,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [2] = LAYOUT(
     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,           LEFT_4X, DOWN_4X, UP_4X,   RIGHT_4X,KC_F10,
-    MO(4),   KC_TAB, KC_TRNS, KC_TRNS, KC_F12,          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_TRNS,
+    KC_TRNS,KC_TAB, KC_TRNS, KC_TRNS, KC_F12,          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_TRNS,
     KC_TRNS, KC_DEL, TD(VIM_cc), KC_TRNS, KC_TRNS,         KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_ENT,
                                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
   ),
@@ -127,12 +141,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,   KC_BRID,    KC_BRIU, KC_MUTE, KC_VOLD, KC_VOLU,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_MS_BTN3, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                                    KC_DEL,  KC_TRNS, KC_MS_BTN1, KC_MS_BTN2
-  ),
-  [4] = LAYOUT(
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,   KC_BRID,    KC_BRIU, KC_MUTE, KC_VOLD, KC_VOLU,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_MS_BTN3, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_BSPC, VIM_C,   KC_TRNS, KC_TRNS,         KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                                    KC_DEL,  KC_TRNS, KC_MS_BTN1, KC_MS_BTN2
+                                    KC_TRNS,  KC_TRNS, KC_MS_BTN1, KC_MS_BTN2
   )
 };
