@@ -71,6 +71,7 @@ void vim_C(void) {
 
 void tobe(void) {
   tap_code(KC_2);
+  wait_ms(100);
   tap_code(KC_2);
   tap_code(KC_1);
 }
@@ -82,10 +83,12 @@ void tohit(void) {
 
 void pill(void) {
   tap_code(KC_3);
-  tap_code(KC_U);
-  tap_code(KC_I);
-  tap_code(KC_U);
-  tap_code(KC_I);
+  register_code(KC_LCTL);  
+  wait_ms(100);
+  tap_code(KC_I);          
+  wait_ms(100);
+  tap_code(KC_I);          
+  unregister_code(KC_LCTL);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -157,7 +160,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [3] = LAYOUT(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,   KC_BRID,    KC_BRIU, KC_MUTE, KC_VOLD, KC_VOLU,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_MS_BTN3, KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, TO(5),         KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, TO(5),   KC_TRNS,          KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
                                     KC_DEL,  KC_TRNS, KC_MS_BTN1, KC_MS_BTN2
   ),
   [4] = LAYOUT(
@@ -169,7 +172,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [5] = LAYOUT(
     KC_1,    KC_2,    KC_3,    KC_4,    KC_5,          KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
     KC_TRNS, PILL,    TOHIT,   TOBE,    KC_TRNS,       KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, TO(0),         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, TO(0),   KC_TRNS,       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
                                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
   )
 };
