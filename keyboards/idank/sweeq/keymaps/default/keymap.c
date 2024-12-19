@@ -52,6 +52,7 @@ enum custom_keycodes {
   TOHIT,
   PILL,
   BOMU,
+  DRINK,
   MY_6,
   MY_7,
   MY_8,
@@ -115,6 +116,13 @@ void bomu(void) {
     tap_code(KC_ENT);
 }
 
+void drink(void) {
+  register_code(KC_LCTL);  
+  wait_ms(100);
+  tap_code(KC_Z);          
+  unregister_code(KC_LCTL);
+}
+
 bool repeat = false;
 uint16_t repeat_timer;
 uint16_t repeat_key;
@@ -170,6 +178,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
       case BOMU:
         bomu();
+        return false;
+      case DRINK:
+        drink();
         return false;
       case MY_6:
         start_repeat(KC_6);
@@ -242,7 +253,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [5] = LAYOUT(
     KC_1,    KC_2,    KC_3,    KC_4,    KC_5,          MY_6,    MY_7,    MY_8,    MY_9,    KC_0,
-    KC_TRNS, PILL,    TOHIT,   TOBE,    KC_TRNS,       KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, BOMU,
+    KC_TRNS, DRINK, KC_TRNS, KC_TRNS, KC_TRNS,       KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, BOMU,
     KC_TRNS, KC_TRNS, KC_TRNS, TG(5),   KC_TRNS,       KC_HOME, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
                                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
   )
