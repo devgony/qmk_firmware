@@ -51,6 +51,7 @@ enum custom_keycodes {
   TOBE,
   TOHIT,
   PILL,
+  HEAL,
   BOMU,
   DRINK,
   MY_6,
@@ -78,7 +79,11 @@ void vim_C(void) {
 void tobe(void) {
   tap_code(KC_2);
   wait_ms(100);
+  tap_code(KC_1);
+  tap_code(KC_SPC);
+  tap_code(KC_1);
   tap_code(KC_2);
+  wait_ms(100);
   tap_code(KC_1);
 }
 
@@ -95,6 +100,13 @@ void pill(void) {
   wait_ms(100);
   tap_code(KC_I);          
   unregister_code(KC_LCTL);
+}
+
+void heal(void) {
+  tap_code(KC_4);
+  tap_code(KC_HOME);
+  wait_ms(100);
+  tap_code(KC_ENT);
 }
 
 void bomu(void) {
@@ -176,6 +188,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case PILL:
         pill();
         return false;
+      case HEAL:
+        heal();
+        return false;
       case BOMU:
         bomu();
         return false;
@@ -242,7 +257,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [3] = LAYOUT(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,   KC_BRID,    KC_BRIU, KC_MUTE, KC_VOLD, KC_VOLU,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_MS_BTN3, KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, TG(5),   KC_TRNS,          KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, TG(5),          KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
                                     KC_DEL,  KC_TRNS, KC_MS_BTN1, KC_MS_BTN2
   ),
   [4] = LAYOUT(
@@ -252,9 +267,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                     KC_DEL,  KC_TRNS, KC_MS_BTN1, KC_MS_BTN2
   ),
   [5] = LAYOUT(
+    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,          KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
+    TOHIT,   TOBE,    HEAL,    KC_TRNS, PILL,          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, TG(5),       KC_HOME, KC_TAB, KC_TRNS, KC_TRNS, KC_TRNS,
+                                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+  ),
+  [6] = LAYOUT(
     KC_1,    KC_2,    KC_3,    KC_4,    KC_5,          MY_6,    MY_7,    MY_8,    MY_9,    KC_0,
-    KC_TRNS, DRINK, KC_TRNS, KC_TRNS, KC_TRNS,       KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, BOMU,
-    KC_TRNS, KC_TRNS, KC_TRNS, TG(5),   KC_TRNS,       KC_HOME, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, DRINK, KC_TRNS, KC_TRNS, TG(6),       KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, BOMU,      
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_HOME, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
                                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
   )
 };
