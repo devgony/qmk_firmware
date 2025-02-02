@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
-#include "os_detection.h"
+// #include "os_detection.h"
 
 #define MY_A LSFT_T(KC_A)
 #define MY_SC RSFT_T(KC_SCLN)
@@ -48,16 +48,6 @@ enum custom_keycodes {
   UP_4X,
   RIGHT_4X,
   VIM_C,
-  TOBE,
-  TOHIT,
-  PILL,
-  HEAL,
-  BOMU,
-  DRINK,
-  MY_6,
-  MY_7,
-  MY_8,
-  MY_9,
 };
 
 void vertical_move_quadruple(const char* keycode_str) {
@@ -76,92 +66,17 @@ void vim_C(void) {
   SEND_STRING(SS_LSFT(SS_TAP(X_END)) SS_TAP(X_DEL));
 }
 
-void tobe(void) {
-  tap_code(KC_2);
-  wait_ms(100);
-  tap_code(KC_1);
-  tap_code(KC_SPC);
-  tap_code(KC_1);
-  tap_code(KC_2);
-  wait_ms(100);
-  tap_code(KC_1);
-}
-
-void tohit(void) {
-  tap_code(KC_SPC);
-  tap_code(KC_1);
-}
-
-void pill(void) {
-  tap_code(KC_3);
-  register_code(KC_LCTL);  
-  wait_ms(100);
-  tap_code(KC_I);          
-  wait_ms(100);
-  tap_code(KC_I);          
-  unregister_code(KC_LCTL);
-}
-
-void heal(void) {
-  tap_code(KC_4);
-  tap_code(KC_HOME);
-  wait_ms(100);
-  tap_code(KC_ENT);
-}
-
-void bomu(void) {
-    register_code(KC_LSFT); 
-    wait_ms(100);
-    tap_code(KC_Z);         
-    unregister_code(KC_LSFT); 
-    wait_ms(100);
-    tap_code(KC_N);         
-    wait_ms(100);
-    tap_code(KC_ENT);
-    register_code(KC_LSFT); 
-    wait_ms(100);
-    tap_code(KC_Z);         
-    unregister_code(KC_LSFT); 
-    wait_ms(100);
-    tap_code(KC_M);         
-    wait_ms(100);
-    tap_code(KC_ENT);
-}
-
-void drink(void) {
-  register_code(KC_LCTL);  
-  wait_ms(100);
-  tap_code(KC_Z);          
-  unregister_code(KC_LCTL);
-}
-
-bool repeat = false;
-uint16_t repeat_timer;
-uint16_t repeat_key;
-
-void start_repeat(uint16_t keycode) {
-    repeat = true;
-    repeat_key = keycode;
-    repeat_timer = timer_read();
-}
-
-void stop_repeat(void) {
-    repeat = false;
-}
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
-    if (keycode == KC_L && (get_mods() & MOD_BIT(KC_LGUI))) {
-        os_variant_t os = detected_host_os();
-
-        if (os == OS_WINDOWS) {
-          tap_code16(LCTL(KC_L));
-          return false;
-        } else {
-          return true;
-        }
-
-    }
+    // if (keycode == KC_L && (get_mods() & MOD_BIT(KC_LGUI))) {
+    //     os_variant_t os = detected_host_os();
+    //     if (os == OS_WINDOWS) {
+    //       tap_code16(LCTL(KC_L));
+    //       return false;
+    //     } else {
+    //       return true;
+    //     }
+    // }
 
     switch (keycode) {
       case LEFT_4X:
@@ -179,60 +94,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case VIM_C:
         vim_C();
         return false;  
-      case TOBE:
-        tobe();
-        return false;  
-      case TOHIT:
-        tohit();
-        return false;
-      case PILL:
-        pill();
-        return false;
-      case HEAL:
-        heal();
-        return false;
-      case BOMU:
-        bomu();
-        return false;
-      case DRINK:
-        drink();
-        return false;
-      case MY_6:
-        start_repeat(KC_6);
-        break;
-      case MY_7:
-        start_repeat(KC_7);
-        break;
-      case MY_8:
-        start_repeat(KC_8);
-        break;
-      case MY_9:
-        start_repeat(KC_9);
-        break;
       default:
         return true;  
     }
-  } else {
-    switch (keycode) {
-      case MY_6:
-      case MY_7:
-      case MY_8:
-      case MY_9:
-        stop_repeat();
-        break;
-      // ...existing code...
-    }
   }
   return true;
-}
-
-void matrix_scan_user(void) {
-  if (repeat && timer_elapsed(repeat_timer) > 100) {
-    tap_code(repeat_key);
-    tap_code(KC_LEFT);
-    tap_code(KC_ENT);
-    repeat_timer = timer_read();
-  }
 }
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -256,26 +122,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [3] = LAYOUT(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,   KC_BRID,    KC_BRIU, KC_MUTE, KC_VOLD, KC_VOLU,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_MS_BTN3, KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, TG(5),          KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                                    KC_DEL,  KC_TRNS, KC_MS_BTN1, KC_MS_BTN2
-  ),
-  [4] = LAYOUT(
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,   KC_BRID,    KC_BRIU, KC_MUTE, KC_VOLD, KC_VOLU,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_MS_BTN3, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_BSPC, VIM_C,   KC_TRNS, KC_TRNS,         KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
                                     KC_DEL,  KC_TRNS, KC_MS_BTN1, KC_MS_BTN2
   ),
-  [5] = LAYOUT(
-    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,          KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-    TOHIT,   TOBE,    HEAL,    KC_TRNS, PILL,          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, TG(5),       KC_HOME, KC_TAB, KC_TRNS, KC_TRNS, KC_TRNS,
-                                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
-  ),
-  [6] = LAYOUT(
-    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,          MY_6,    MY_7,    MY_8,    MY_9,    KC_0,
-    KC_TRNS, DRINK, KC_TRNS, KC_TRNS, TG(6),       KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, BOMU,      
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_HOME, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
-  )
 };
