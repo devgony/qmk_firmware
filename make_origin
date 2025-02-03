@@ -1,8 +1,8 @@
 make \
     idank/sweeq:default:flash \
     -e USER_NAME=idank \
-    -e POINTING_DEVICE=trackpoint \
-    -e POINTING_DEVICE_POSITION=right \
+#    -e POINTING_DEVICE=trackpoint \
+#    -e POINTING_DEVICE_POSITION=right \
     -e TRACKBALL_RGB_RAINBOW=no \
     -e OLED=no \
     -j8
